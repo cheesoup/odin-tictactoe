@@ -6,10 +6,9 @@ function tictactoe() {
 	const gameboard = (() => {
 		let grid;
 		let round;
-
-		const getCell = (x, y) => { return grid[y * 3 + x]; }
 		const getGrid = () => { return grid; }
 		const getRound = () => { return round; }
+		const getCell = (x, y) => { return y === undefined ? grid[x] : grid[y * 3 + x]; }
 		
 		const mark = (player, x, y) => {
 			grid[y * 3 + x] = player;
@@ -29,19 +28,15 @@ function tictactoe() {
 		return { getCell, getGrid, getRound, mark, reset };
 	})();
 
-	const init = (p0, p1) => {
-		const createPlayer = (index, name) => {
-			const symbol = index ? "x" : "o";
-			return { name, symbol };
-		}
-		players[0] = createPlayer(0, p0);
-		players[1] = createPlayer(1, p1);
+	const init = () => {
+		// initialize gameboard and randomize starting player
 		gameboard.reset();
 		gameStatus = Math.floor(Math.random() * 2);
+		return gameStatus;
 	}
 
 	const play = (x, y) => {
-		if ((gameStatus === 0 || gameStatus === 1) && gameboard.getCell(x, y) === undefined) {
+		if ((gameStatus === 0 || gameStatus === 1) && gameboard.getCell(x, y) === undefined && (y * 3 + x) < 9) {
 			const winningCombos = [ 
 				[0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
 				[0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
@@ -54,7 +49,7 @@ function tictactoe() {
 
 			for (let combo of winningCombos) {
 				let total = 0;
-				for (let cell of combo) total += (gameboard.getGrid()[cell] === gameStatus);
+				for (let cell of combo) total += gameboard.getCell(cell) === gameStatus;
 				if (total === 3) {
 					gameStatus += 10;
 					break;
@@ -69,14 +64,14 @@ function tictactoe() {
 	}
 
 	const printPlay = (x, y) => {
-		console.log(`${players[gameStatus].name} marks (${x}, ${y})`);
+		console.log(`Player ${gameStatus} marks (${x}, ${y})`);
 	}
 
 	const printGrid = () => {
 		let log = `Round ${gameboard.getRound()}\n`;
 		for (let i = 0; i < gameboard.getGrid().length; i++) {
 			if (i !== 0 && i % 3 === 0) log += "\n"
-			log += gameboard.getGrid()[i] === undefined ? `[${i}: -] ` : `[${i}: ${gameboard.getGrid()[i]}] `;
+			log += gameboard.getGrid()[i] === undefined ? `[${i}: -] ` : `[${i}: ${gameboard.getCell(i)}] `;
 		}
 		console.log(log);
 	}
@@ -89,13 +84,13 @@ function tictactoe() {
 				break;
 			case 10:
 			case 11:
-				console.log(`${players[gameStatus - 10].name} wins!`);
+				console.log(`Player ${gameStatus - 10} wins!`);
 				break;
 			case 12:
 				console.log("It's a draw...");
 				break;
 			default:
-				console.log(`${players[gameStatus].name}'s turn`);
+				console.log(`Player ${gameStatus}'s turn`);
 				break;
 		}
 	}
