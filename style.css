@@ -1,4 +1,98 @@
+@font-face {
+	font-family: "Fira Sans";
+	src: url("fonts/FiraSans-Regular.woff2"), url("fonts/FiraSans-Regular.woff");
+}
+
+@font-face {
+	font-family: "DSEG14 Classic";
+	src: url("fonts/DSEG14Classic-Regular.woff2"), url("fonts/DSEG14Classic-Regular.woff");
+}
+
 * {
 	padding: 0;
 	margin: 0;
+
+	font-family: "Fira Sans", "Helvetica", "Verdana", sans-serif;
+	color: #FFF;
+}
+
+.dseg14 { font-family: "DSEG14 Classic"; }
+.bg-black { background-color: #000; }
+
+body {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 50px;
+}
+
+div#game {
+	width: min(60vw, 60vh);
+	height: min(60vw, 60vh);
+
+	display: grid;
+	grid: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+div#game > svg {
+	background: transparent;
+	border-top: 0;
+	border-left: 0;
+	border-right: 3px #FFF solid;
+	border-bottom: 3px #FFF solid;
+}
+
+div#game > svg:nth-child(3n) {
+	border-right: 0;
+}
+
+div#game > svg:nth-child(1n + 7) {
+	border-bottom: 0;
+}
+
+div#game > svg * {
+	stroke: rgb(0, 0, 0);
+	stroke-width: 5;
+	stroke-opacity: 0;
+	transition: stroke 0.2s;
+}
+
+div#game[data-game-status="0"] > svg[data-mark="undefined"]:hover,
+div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover {
+	cursor: pointer;
+}
+
+div#game[data-game-status="0"] > svg[data-mark="undefined"]:hover line,
+div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover circle {
+	stroke: rgb(77, 77, 77);
+	stroke-opacity: 100%;
+}
+
+div#game > svg[data-mark="0"] line,
+div#game > svg[data-mark="1"] circle {
+	stroke: rgb(255, 255, 255);
+	stroke-opacity: 100%;
+}
+
+div#score {
+	display: flex;
+	gap: 10vw;
+	text-align: center;
+}
+
+div#score > span {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+p.player {
+	font-size: 1.25rem;
+	text-transform: uppercase;
+}
+
+p.wins {
+	font-size: 3rem;
 }
