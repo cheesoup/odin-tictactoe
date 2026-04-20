@@ -146,6 +146,7 @@ function gui(game) {
 	const turns = document.querySelectorAll("svg.turn-marker");
 	const scores = document.querySelectorAll("p.wins");
 	const names = document.querySelectorAll("p.name");
+	const msg = document.querySelector("div.msg");
 
 	const setName = (player, name) => {
 		names[player].textContent = name;
@@ -153,7 +154,26 @@ function gui(game) {
 
 	const update = () => {
 		const gameStatus = game.getStatus();
+		const message = document.createElement("span");
 		grid.setAttribute("data-game-status", game.getStatus());
+		msg.innerHTML = "";
+
+		switch(gameStatus) {
+			case 0:
+			case 1:
+				message.textContent = `${names[gameStatus].textContent}'s turn.`;
+				break;
+			case 10:
+			case 11:
+				message.textContent = `${names[gameStatus - 10].textContent} wins! Click to continue.`;
+				break;
+			case 12:
+				message.textContent = `It's a draw. Click to continue.`;
+				break;
+
+		}
+		msg.append(message);
+
 		for (let i = 0; i < cells.length; i++)
 			cells[i].setAttribute("data-mark", game.getCell(i));
 		for (let i = 0; i < turns.length; i++)

@@ -28,6 +28,7 @@
 .ac { align-items: center; }
 .gap10 { gap: 10px; }
 .gap50 { gap: 50px; }
+.gap100 { gap: 100px; }
 .bdr1 { border: var(--border-1); }
 .bdr3 { border: var(--border-3); }
 
@@ -118,6 +119,19 @@ svg.turn-marker * {
 
 svg.turn-marker[data-your-turn="true"] * {
 	stroke: var(--foreground-color);
+}
+
+@keyframes message {
+	0% { color: var(--foreground-color); }
+	100% { color: var(--background-color); }
+}
+
+div.msg span {
+	font-size: 1.25rem;
+	animation-fill-mode: forwards;
+	animation-name: message;
+	animation-delay: 3s;
+	animation-duration: 2s;
 }
 
 div.options {
