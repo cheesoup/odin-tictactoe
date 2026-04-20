@@ -141,7 +141,7 @@ function tictactoe() {
 }
 
 function gui(game) {
-	const grid = document.getElementById("game");
+	const grid = document.querySelector("div.grid");
 	const cells = grid.querySelectorAll("svg");
 	const turns = document.querySelectorAll("svg.turn-marker");
 	const scores = document.querySelectorAll("p.wins");
@@ -169,7 +169,7 @@ function gui(game) {
 const game = tictactoe();
 const ui = gui(game);
 
-for (let cell of document.querySelectorAll("div#game svg")) {
+for (let cell of document.querySelectorAll("div svg")) {
 	cell.addEventListener("click", () => {
 		if (game.getStatus() < 10) {
 			let x = parseInt(cell.getAttribute("data-x"));
