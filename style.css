@@ -3,20 +3,15 @@
 	src: url("fonts/FiraSans-Regular.woff2"), url("fonts/FiraSans-Regular.woff");
 }
 
-@font-face {
-	font-family: "DSEG14 Classic";
-	src: url("fonts/DSEG14Classic-Regular.woff2"), url("fonts/DSEG14Classic-Regular.woff");
-}
-
 * {
 	padding: 0;
 	margin: 0;
+	box-sizing: border-box;
 
 	font-family: "Fira Sans", "Helvetica", "Verdana", sans-serif;
 	color: #FFF;
 }
 
-.dseg14 { font-family: "DSEG14 Classic"; }
 .bg-black { background-color: #000; }
 
 body {
@@ -26,6 +21,13 @@ body {
 	justify-content: center;
 	align-items: center;
 	gap: 50px;
+}
+
+div.main-container {
+	display: flex;
+	justify-content: space-evenly;
+	width: 100vw;
+	padding: 100px;
 }
 
 div#game {
@@ -60,7 +62,10 @@ div#game > svg * {
 }
 
 div#game[data-game-status="0"] > svg[data-mark="undefined"]:hover,
-div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover {
+div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover,
+div#game[data-game-status="10"]:hover,
+div#game[data-game-status="11"]:hover,
+div#game[data-game-status="12"]:hover {
 	cursor: pointer;
 }
 
@@ -76,23 +81,85 @@ div#game > svg[data-mark="1"] circle {
 	stroke-opacity: 100%;
 }
 
-div#score {
-	display: flex;
-	gap: 10vw;
-	text-align: center;
+div.player {
+	width: 10vw;
 }
 
-div#score > span {
+div.player,
+div.player-info {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 50px;
 }
 
-p.player {
+div.player svg {
+	stroke-width: 2.5;
+}
+
+
+p.name {
 	font-size: 1.25rem;
 	text-transform: uppercase;
 }
 
 p.wins {
 	font-size: 3rem;
+}
+
+svg.mark * {
+	stroke: rgb(255, 255, 255);
+}
+
+svg.arrow * {
+	transition: 0.2s;
+	stroke: rgb(0, 0, 0);
+}
+
+svg.arrow[data-your-turn="true"] * {
+	stroke: rgb(255, 255, 255);
+}
+
+div.options {
+	position: fixed;
+	top: 15px;
+	left: 15px;
+}
+
+button,
+input[type="submit"] {
+	padding: 5px 10px;
+	border: #FFF 1px solid;
+	background-color: #000;
+}
+
+button:hover,
+input[type="submit"]:hover {
+	color: #000;
+	background-color: #FFF;
+	cursor: pointer;
+}
+
+dialog#options {
+	margin: auto auto;
+	padding: 25px;
+	border: 1px #FFF solid;
+	background-color: #000;
+}
+
+dialog#options form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+dialog#options input[type="text"] {
+	padding: 5px;
+	border: #FFF 1px solid;
+	background-color: #000;
+}
+
+dialog#options input[type="text"]:focus {
+	outline: #FFF 1px solid;
 }

@@ -2,6 +2,8 @@ function tictactoe() {
 	// gameStatus codes
 	// -1 = uninitialized, 0 = p0's turn, 1 = p1's turn, 10 = p0 win, 11 = p1 win, 12 = draw
 	let gameStatus = -1;
+	const score = [0, 0];
+
 	const gameboard = (() => {
 		let grid;
 		let round;
@@ -47,20 +49,29 @@ function tictactoe() {
 				// check col
 				for (let i = 0; i < 3; i++) {
 					if (gameboard.getCell(x, i) != gameStatus) break;
-					if (i === 2) return gameStatus + 10;
+					if (i === 2) {
+						score[gameStatus]++;
+						return gameStatus + 10;
+					}
 				}
 
 				// check rows
 				for (let i = 0; i < 3; i++) {
 					if (gameboard.getCell(i, y) != gameStatus) break;
-					if (i === 2) return gameStatus + 10;
+					if (i === 2) {
+						score[gameStatus]++;
+						return gameStatus + 10;
+					}
 				}
 
 				// check diag
 				if (x === y) {
 					for (let i = 0; i < 3; i++) {
 						if (gameboard.getCell(i, i) != gameStatus) break;
-						if (i === 2) return gameStatus + 10;
+						if (i === 2) {
+							score[gameStatus]++;
+							return gameStatus + 10;
+						}
 					}
 				}
 
@@ -68,7 +79,10 @@ function tictactoe() {
 				if (x + y == 2) {
 					for (let i = 0; i < 3; i++) {
 						if (gameboard.getCell(i, 2 - i) != gameStatus) break;
-						if (i === 2) return gameStatus = 10;
+						if (i === 2) {
+							score[gameStatus]++;
+							return gameStatus = 10;
+						}
 					}
 				}
 				
@@ -81,6 +95,7 @@ function tictactoe() {
 	}
 
 	const getStatus = () => { return gameStatus; }
+	const getScore = (p) => { return score[p]; }
 	const getCell = (x, y) => { return gameboard.getCell(x, y); }
 
 	const printPlay = (x, y) => {
@@ -115,22 +130,34 @@ function tictactoe() {
 		}
 	}
 
-	return { init, play, getStatus, getCell }
+	return { init, play, getScore, getStatus, getCell }
 }
 
 function gui(game) {
-	const gameDiv = document.getElementById("game");
-	const cells = gameDiv.querySelectorAll("svg");
+	const grid = document.getElementById("game");
+	const cells = grid.querySelectorAll("svg");
+	const turns = document.querySelectorAll("svg.arrow");
+	const scores = document.querySelectorAll("p.wins");
+	const names = document.querySelectorAll("p.name");
+
+	const setName = (player, name) => {
+		names[player].textContent = name;
+	}
+
 	const update = () => {
-		gameDiv.setAttribute("data-game-status", game.getStatus());
-		for (let i = 0; i < cells.length; i++) 	cells[i].setAttribute("data-mark", game.getCell(i));
+		const gameStatus = game.getStatus();
+		grid.setAttribute("data-game-status", game.getStatus());
+		for (let i = 0; i < cells.length; i++)
+			cells[i].setAttribute("data-mark", game.getCell(i));
+		for (let i = 0; i < turns.length; i++)
+			turns[i].setAttribute("data-your-turn", gameStatus === i);
+		for (let i = 0; i < scores.length; i++)
+			scores[i].textContent = game.getScore(i);
 	}
 	
-	document.getElementById("game").setAttribute("data-game-status", game.getStatus());
-	return { update };
+	update();
+	return { setName, update };
 }
-
-
 
 const game = tictactoe();
 game.init();
@@ -139,9 +166,19 @@ const ui = gui(game);
 
 for (let cell of document.querySelectorAll("div#game svg")) {
 	cell.addEventListener("click", () => {
-		let x = parseInt(cell.getAttribute("data-x"));
-		let y = parseInt(cell.getAttribute("data-y"));
-		game.play(x, y);
+		if (game.getStatus() < 10) {
+			let x = parseInt(cell.getAttribute("data-x"));
+			let y = parseInt(cell.getAttribute("data-y"));
+			game.play(x, y);
+		}
+		else game.init();
 		ui.update();
 	})
 }
+
+document.querySelector("form").addEventListener("submit", function(e) {
+	e.preventDefault();
+	const data = new FormData(e.target);
+	ui.setName(0, data.get("p0"));
+	ui.setName(1, data.get("p1"));
+});
