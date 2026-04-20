@@ -39,53 +39,52 @@ div.container {
 	width: 100vw;
 }
 
-div#game {
+div.grid {
 	width: min(60vw, 60vh);
 	height: min(60vw, 60vh);
-
 	display: grid;
 	grid: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
-div#game > svg {
+div.grid svg {
 	border-top: 0;
 	border-left: 0;
 	border-right: var(--border-3);
 	border-bottom: var(--border-3);
 }
 
-div#game > svg:nth-child(3n) {
+div.grid svg:nth-child(3n) {
 	border-right: 0;
 }
 
-div#game > svg:nth-child(1n + 7) {
+div.grid svg:nth-child(1n + 7) {
 	border-bottom: 0;
 }
 
-div#game > svg * {
+div.grid svg * {
 	stroke: var(--background-color);
 	stroke-width: 5;
 	stroke-opacity: 0;
 	fill: transparent;
-	transition: stroke 0.2s;
+	transition: 0.2s;
 }
 
-div#game[data-game-status="0"] svg[data-mark="undefined"]:hover,
-div#game[data-game-status="1"] svg[data-mark="undefined"]:hover,
-div#game[data-game-status="10"]:hover,
-div#game[data-game-status="11"]:hover,
-div#game[data-game-status="12"]:hover {
+div.grid[data-game-status="0"] svg[data-mark="undefined"]:hover,
+div.grid[data-game-status="1"] svg[data-mark="undefined"]:hover,
+div.grid[data-game-status="10"]:hover,
+div.grid[data-game-status="11"]:hover,
+div.grid[data-game-status="12"]:hover {
 	cursor: pointer;
 }
 
-div#game[data-game-status="0"] svg[data-mark="undefined"]:hover line,
-div#game[data-game-status="1"] svg[data-mark="undefined"]:hover circle {
+div.grid[data-game-status="0"] svg[data-mark="undefined"]:hover line,
+div.grid[data-game-status="1"] svg[data-mark="undefined"]:hover circle {
 	stroke: var(--transparent-color);
 	stroke-opacity: 100%;
 }
 
-div#game svg[data-mark="0"] line,
-div#game svg[data-mark="1"] circle {
+div.grid svg[data-mark="0"] line,
+div.grid svg[data-mark="1"] circle {
 	stroke: var(--foreground-color);
 	stroke-opacity: 100%;
 }
@@ -139,18 +138,18 @@ input[type="submit"]:hover {
 	background-color: var(--foreground-color);
 }
 
-dialog#namer {
+dialog#name-dialog {
 	width: 33vw;
 	max-width: 500px;
 	margin: auto auto;
 	padding: 25px;
 }
 
-dialog#namer input[type="text"] {
+dialog#name-dialog input[type="text"] {
 	padding: 5px;
 }
 
-dialog#namer input[type="text"]:focus {
+dialog#name-dialog input[type="text"]:focus {
 	color: var(--background-color);
 	background-color: var(--foreground-color);
 	outline: 0;

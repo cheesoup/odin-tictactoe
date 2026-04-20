@@ -184,6 +184,7 @@ for (let cell of document.querySelectorAll("div#game svg")) {
 document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
 	const data = new FormData(e.target);
+
 	ui.setName(0, data.get("p0"));
 	ui.setName(1, data.get("p1"));
 });
