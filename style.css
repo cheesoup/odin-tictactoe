@@ -70,22 +70,22 @@ div#game > svg * {
 	transition: stroke 0.2s;
 }
 
-div#game[data-game-status="0"] > svg[data-mark="undefined"]:hover,
-div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover,
+div#game[data-game-status="0"] svg[data-mark="undefined"]:hover,
+div#game[data-game-status="1"] svg[data-mark="undefined"]:hover,
 div#game[data-game-status="10"]:hover,
 div#game[data-game-status="11"]:hover,
 div#game[data-game-status="12"]:hover {
 	cursor: pointer;
 }
 
-div#game[data-game-status="0"] > svg[data-mark="undefined"]:hover line,
-div#game[data-game-status="1"] > svg[data-mark="undefined"]:hover circle {
+div#game[data-game-status="0"] svg[data-mark="undefined"]:hover line,
+div#game[data-game-status="1"] svg[data-mark="undefined"]:hover circle {
 	stroke: var(--transparent-color);
 	stroke-opacity: 100%;
 }
 
-div#game > svg[data-mark="0"] line,
-div#game > svg[data-mark="1"] circle {
+div#game svg[data-mark="0"] line,
+div#game svg[data-mark="1"] circle {
 	stroke: var(--foreground-color);
 	stroke-opacity: 100%;
 }
