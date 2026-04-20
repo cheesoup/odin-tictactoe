@@ -1,8 +1,8 @@
 function tictactoe() {
 	// gameStatus codes
-	// -1 = uninitialized, 0 = p0's turn, 1 = p1's turn, 10 = p0 win, 11 = p1 win, 12 = draw
+	// -1 = unnewGameialized, 0 = p0's turn, 1 = p1's turn, 10 = p0 win, 11 = p1 win, 12 = draw
 	let gameStatus = -1;
-	const score = [0, 0];
+	let score = [0, 0];
 
 	const gameboard = (() => {
 		let grid;
@@ -16,7 +16,7 @@ function tictactoe() {
 			round++;
 		}
 
-		const reset = () => {
+		const clear = () => {
 			 grid = [
 				undefined, undefined, undefined,
 				undefined, undefined, undefined,
@@ -25,14 +25,20 @@ function tictactoe() {
 			round = 0;
 		}
 
-		reset();
-		return { getCell, getGrid, getRound, mark, reset };
+		clear();
+		return { getCell, getGrid, getRound, mark, clear };
 	})();
 
-	const init = () => {
-		// initialize gameboard and randomize starting player
-		gameboard.reset();
-		gameStatus = Math.floor(Math.random() * 2);
+	const reset = () => {
+		gameStatus = -1;
+		score = [0, 0];
+		newGame();
+	}
+
+	const newGame = () => {
+		// newGameialize gameboard and randomize starting player
+		gameboard.clear();
+		gameStatus = gameStatus === -1 ? Math.floor(Math.random() * 2) : (gameStatus + 9) % 2;
 		return gameStatus;
 	}
 
@@ -40,8 +46,8 @@ function tictactoe() {
 		// check if game is in session and chosen cell is valid and undefined
 		if ((gameStatus === 0 || gameStatus === 1) && gameboard.getCell(x, y) === undefined && (y * 3 + x) < 9) {
 			gameboard.mark(gameStatus, x, y);
-			printPlay(x, y);
-			printGrid();
+			// printPlay(x, y);
+			// printGrid();
 
 			// check win conditions
 			// https://stackoverflow.com/a/1056352
@@ -89,7 +95,7 @@ function tictactoe() {
 				if (gameboard.getRound() >= 9) return 12;
 				else return (gameStatus + 1) % 2;
 			})();
-			printStatus();	
+			// printStatus();	
 		}
 		return gameStatus;
 	}
@@ -97,7 +103,7 @@ function tictactoe() {
 	const getStatus = () => { return gameStatus; }
 	const getScore = (p) => { return score[p]; }
 	const getCell = (x, y) => { return gameboard.getCell(x, y); }
-
+	/*
 	const printPlay = (x, y) => {
 		console.log(`Player ${gameStatus} marks (${x}, ${y})`);
 	}
@@ -129,14 +135,15 @@ function tictactoe() {
 				break;
 		}
 	}
-
-	return { init, play, getScore, getStatus, getCell }
+	*/
+	newGame();
+	return { reset, newGame, play, getScore, getStatus, getCell }
 }
 
 function gui(game) {
 	const grid = document.getElementById("game");
 	const cells = grid.querySelectorAll("svg");
-	const turns = document.querySelectorAll("svg.arrow");
+	const turns = document.querySelectorAll("svg.turn-marker");
 	const scores = document.querySelectorAll("p.wins");
 	const names = document.querySelectorAll("p.name");
 
@@ -160,9 +167,7 @@ function gui(game) {
 }
 
 const game = tictactoe();
-game.init();
 const ui = gui(game);
-
 
 for (let cell of document.querySelectorAll("div#game svg")) {
 	cell.addEventListener("click", () => {
@@ -171,14 +176,19 @@ for (let cell of document.querySelectorAll("div#game svg")) {
 			let y = parseInt(cell.getAttribute("data-y"));
 			game.play(x, y);
 		}
-		else game.init();
+		else game.newGame();
 		ui.update();
 	})
 }
 
-document.querySelector("form").addEventListener("submit", function(e) {
+document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
 	const data = new FormData(e.target);
 	ui.setName(0, data.get("p0"));
 	ui.setName(1, data.get("p1"));
+});
+
+document.querySelector("button.reset").addEventListener("click", (e) => {
+	game.reset();
+	ui.update();
 });
