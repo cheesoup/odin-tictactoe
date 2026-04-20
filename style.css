@@ -141,6 +141,7 @@ input[type="submit"]:hover {
 
 dialog#namer {
 	width: 33vw;
+	max-width: 500px;
 	margin: auto auto;
 	padding: 25px;
 }
@@ -150,5 +151,7 @@ dialog#namer input[type="text"] {
 }
 
 dialog#namer input[type="text"]:focus {
-	outline: var(--border-1);
+	color: var(--background-color);
+	background-color: var(--foreground-color);
+	outline: 0;
 }
